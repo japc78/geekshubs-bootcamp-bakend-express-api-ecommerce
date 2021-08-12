@@ -30,6 +30,32 @@ const getUserController = async (req = request, res = response) => {
   }
 }
 
+const addUserController = async (req = request, res = response) => {
+  try {
+    const { userData } = req.body;
+    const user = new User(userData);
+
+    await user.save();
+
+    res.status(200).json({
+      status: 'SUCCESS',
+      user
+    });
+
+  } catch (error) {
+    console.error('error', error);
+
+    res.status(500).json({
+      status: 'FAILURE',
+      error: {
+        code: error.code,
+        message: error.message
+      }
+    })
+  }
+}
+
 module.exports = {
-  getUserController
+  getUserController,
+  addUserController
 }

@@ -4,6 +4,7 @@ const dbConnection = require('./db/config');
 require('dotenv').config();
 
 const app = express();
+app.use( express.json());
 
 dbConnection();
 
