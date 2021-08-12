@@ -7,6 +7,12 @@ const app = express();
 
 dbConnection();
 
+const paths = {
+  user : '/api/user',
+}
+
+app.use(paths.user, require('./routes/user'));
+
 app.get('/', (req, res) => {
   res.send('Hello Geeks');
 });
