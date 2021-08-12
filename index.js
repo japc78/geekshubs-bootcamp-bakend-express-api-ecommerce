@@ -1,7 +1,11 @@
 const express = require('express');
+const dbConnection = require('./db/config');
+
 require('dotenv').config();
 
 const app = express();
+
+dbConnection();
 
 app.get('/', (req, res) => {
   res.send('Hello Geeks');
