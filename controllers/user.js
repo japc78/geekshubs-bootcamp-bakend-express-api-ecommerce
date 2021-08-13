@@ -61,7 +61,41 @@ const addUserController = async (req = request, res = response) => {
   }
 }
 
+const updateUserController = async (req = request, res = response) => {
+  try {
+
+    const {id} = req.params;
+    const { userData } = req.body;
+
+    if (userData.password) {
+      // Encriptar password
+      const salt = bcrypt.genSaltSync();
+      userData.password = bcrypt.hashSync(userData.password, salt);
+    }
+
+    const user = await User.findByIdAndUpdate(id, userData, (err, userDb)=> {
+      if (err) throw err;
+      return userDb;
+    })
+
+    res.status(200).json({
+      status: 'SUCCESS',
+      user
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      status: 'FAILURE',
+      error: {
+        code: error.code,
+        message: error.message
+      }
+    });
+  }
+}
+
 module.exports = {
   getUserController,
-  addUserController
+  addUserController,
+  updateUserController,
 }
