@@ -94,8 +94,32 @@ const updateUserController = async (req = request, res = response) => {
   }
 }
 
+const deleteUserController = async (req = request, res = response) => {
+  try {
+    const { id } = req.params;
+
+    await User.deleteOne({ _id: id }, (err)=> {
+      if (err) throw err;
+      res.status(200).json({
+        status: 'SUCCESS',
+        msg: `User with id: ${id} delete on database`
+      });
+    })
+
+  } catch (error) {
+    res.status(500).json({
+      status: 'FAILURE',
+      error: {
+        code: error.code,
+        message: error.message
+      }
+    });
+  }
+}
+
 module.exports = {
   getUserController,
   addUserController,
   updateUserController,
+  deleteUserController
 }
