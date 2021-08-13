@@ -10,9 +10,11 @@ dbConnection();
 
 const paths = {
   user : '/api/user',
+  auth: '/api/auth'
 }
 
 app.use(paths.user, require('./routes/user'));
+app.use(paths.auth, require('./routes/auth'));
 
 app.get('/', (req, res) => {
   res.send('Hello Geeks');
