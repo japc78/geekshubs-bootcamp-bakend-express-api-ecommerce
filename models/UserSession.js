@@ -3,7 +3,8 @@ const { Schema, model } = require('mongoose');
 const UserSessionSchema = new Schema({
   uid: {
     type: String,
-    required: [true, 'The uid is required']
+    required: [true, 'The uid is required'],
+    unique: true
   },
 
   token: {

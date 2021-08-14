@@ -1,6 +1,5 @@
 const { response, request } = require('express');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
 const UserSession = require('../models/UserSession');
@@ -52,13 +51,21 @@ const authLogoutController = async (req = request, res = response) => {
   const { uid } = req.body;
 
   try {
-    await UserSession.deleteMany({ uid }, (error, data)=> {
+    await UserSession.deleteOne({ uid }, (error, result)=> {
       if (error) throw error;
 
-      res.status(200).json({
-        status: 'SUCCESS',
-        msg: `User with id: ${uid} logout correctly`
-      });
+      if (result.deletedCount === 0) {
+        res.status(500).json({
+          status: 'FAILURE',
+          msg: 'Unable to complete the operation, please try again later, if the problem persists, please contact the Administrator.'
+        })
+
+      } else {
+        res.status(200).json({
+          status: 'SUCCESS',
+          msg: `User with id: ${uid} logout correctly`
+        });
+      }
     })
 
   } catch (error) {
