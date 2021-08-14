@@ -57,13 +57,13 @@ const authLogoutController = async (req = request, res = response) => {
       if (result.deletedCount === 0) {
         res.status(500).json({
           status: 'FAILURE',
-          msg: 'Unable to complete the operation, please try again later, if the problem persists, please contact the Administrator.'
+          message: 'Unable to complete the operation, please try again later, if the problem persists, please contact the Administrator.'
         })
 
       } else {
         res.status(200).json({
           status: 'SUCCESS',
-          msg: `User with id: ${uid} logout correctly`
+          message: `User with id: ${uid} logout correctly`
         });
       }
     })
