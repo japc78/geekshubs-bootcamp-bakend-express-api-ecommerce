@@ -55,7 +55,6 @@ const authLoginController = async (req = request, res = response) => {
 }
 
 const authLogoutController = async (req = request, res = response) => {
-  // TODO Add JWT and finish.
   const { uid } = req.body;
 
   try {
