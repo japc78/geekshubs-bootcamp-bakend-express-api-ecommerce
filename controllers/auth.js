@@ -27,8 +27,16 @@ const authLoginController = async (req = request, res = response) => {
       token
     }
 
-    const userSession = new UserSession(session);
-    await userSession.save();
+    const result = await UserSession.findOneAndUpdate({uid: user.id}, {token});
+    console.log(result);
+
+    if (!result) {
+      const userSession = new UserSession(session);
+      await userSession.save();
+    }
+
+    // const userSession = new UserSession(session);
+    // await userSession.update();
 
     res.status(200).json({
       status: 'SUCCESS',
