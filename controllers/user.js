@@ -35,12 +35,11 @@ const getUserController = async (req = request, res = response) => {
 
 const addUserController = async (req = request, res = response) => {
   try {
-    const { userData } = req.body;
-    const user = new User(userData);
+    const user = new User(req.body.user);
 
     // Encriptar password
     const salt = bcrypt.genSaltSync();
-    user.password = bcrypt.hashSync(userData.password, salt);
+    user.password = bcrypt.hashSync(user.password, salt);
 
     await user.save();
 
@@ -64,7 +63,7 @@ const addUserController = async (req = request, res = response) => {
 const updateUserController = async (req = request, res = response) => {
   try {
 
-    const {id} = req.params;
+    const { id } = req.params;
     const { userData } = req.body;
 
     if (userData.password) {
