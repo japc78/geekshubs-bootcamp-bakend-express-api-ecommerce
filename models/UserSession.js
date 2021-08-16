@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 
+
 const UserSessionSchema = new Schema({
   uid: {
     type: String,
@@ -13,5 +14,6 @@ const UserSessionSchema = new Schema({
     unique: true
   }
 })
+
 
 module.exports = model('UserSession', UserSessionSchema);

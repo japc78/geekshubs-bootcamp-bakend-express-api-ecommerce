@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const UserSession = require('../models/UserSession');
 
+
 const validJWT = async (req = request, res = response, next) => {
   const token = req.header('x-token');
 
@@ -13,12 +14,9 @@ const validJWT = async (req = request, res = response, next) => {
 
   try {
     const { uid } = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
-    // req.uid = uid;
 
     const user = await User.findById(uid);
     const userSession = await UserSession.findOne({uid});
-
-    console.log(userSession);
 
     if (!user || !userSession) return res.status(401).json({
       status: 'FAILURE',
@@ -35,7 +33,6 @@ const validJWT = async (req = request, res = response, next) => {
     next();
 
   } catch (error) {
-    console.log(error);
     res.status(401).json({
       status: 'FAILURE',
       message: 'Token is not valid',
@@ -43,6 +40,7 @@ const validJWT = async (req = request, res = response, next) => {
     });
   }
 }
+
 
 module.exports = {
   validJWT

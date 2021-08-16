@@ -22,4 +22,5 @@ router.delete('/:id',[
   validJWT,
 ], deleteUserController);
 
+
 module.exports = router;

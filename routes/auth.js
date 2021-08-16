@@ -7,12 +7,15 @@ const { authLoginController, authLogoutController } = require('../controllers/au
 
 const router = Router()
 
+
 router.post('/login', [
   check('email', 'Email is required').isEmail(),
   check('password', 'Password is required').notEmpty(),
   validFields
 ], authLoginController);
 
+
 router.post('/logout',[validJWT], authLogoutController);
+
 
 module.exports = router;

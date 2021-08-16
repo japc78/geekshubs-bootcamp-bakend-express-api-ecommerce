@@ -5,11 +5,11 @@ const User = require('../models/User');
 const UserSession = require('../models/UserSession');
 const { jwtGenerator } = require('../helpers/jwt-generator');
 
+
 const authLoginController = async (req = request, res = response) => {
   const { email, password } = req.body;
 
   try {
-
     const user = await User.findOne({email});
 
     if (!user) return res.status(400).json({ msg: 'Email not found in DB'});
@@ -28,15 +28,11 @@ const authLoginController = async (req = request, res = response) => {
     }
 
     const result = await UserSession.findOneAndUpdate({uid: user.id}, {token});
-    console.log(result);
 
     if (!result) {
       const userSession = new UserSession(session);
       await userSession.save();
     }
-
-    // const userSession = new UserSession(session);
-    // await userSession.update();
 
     res.status(200).json({
       status: 'SUCCESS',
@@ -45,14 +41,13 @@ const authLoginController = async (req = request, res = response) => {
     });
 
   } catch (error) {
-
-    console.error(error);
     res.status(500).json({
       status: 'FAILURE',
       error: error.message
     });
   }
 }
+
 
 const authLogoutController = async (req = request, res = response) => {
   const { uid } = req.body;
@@ -83,6 +78,7 @@ const authLogoutController = async (req = request, res = response) => {
     });
   }
 }
+
 
 module.exports = {
   authLoginController,

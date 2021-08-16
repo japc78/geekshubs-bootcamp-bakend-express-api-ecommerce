@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 
 const User = require('../models/User');
 
+
 const getUserController = async (req = request, res = response) => {
   const { limit = 5, from = 0, state = true } = req.query;
 
@@ -23,7 +24,6 @@ const getUserController = async (req = request, res = response) => {
     });
 
   } catch (error) {
-    console.error(error);
     res.status(500).json({
       status: 'FAILURE',
       message: 'Error: Service is not available, contact with administrator',
@@ -31,6 +31,7 @@ const getUserController = async (req = request, res = response) => {
     });
   }
 }
+
 
 const addUserController = async (req = request, res = response) => {
   try {
@@ -49,8 +50,6 @@ const addUserController = async (req = request, res = response) => {
     });
 
   } catch (error) {
-    console.error('error', error);
-
     res.status(500).json({
       status: 'FAILURE',
       error: {
@@ -60,6 +59,7 @@ const addUserController = async (req = request, res = response) => {
     })
   }
 }
+
 
 const updateUserController = async (req = request, res = response) => {
   try {
@@ -94,6 +94,7 @@ const updateUserController = async (req = request, res = response) => {
   }
 }
 
+
 const deleteUserController = async (req = request, res = response) => {
   try {
     const { id } = req.params;
@@ -116,6 +117,7 @@ const deleteUserController = async (req = request, res = response) => {
     });
   }
 }
+
 
 module.exports = {
   getUserController,
