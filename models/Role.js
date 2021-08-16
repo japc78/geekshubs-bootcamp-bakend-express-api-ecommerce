@@ -9,7 +9,7 @@ const RoleSchema = Schema({
   }
 })
 
-// Se filtra la salida del Objeto (se ignora password, __v )
+
 RoleSchema.methods.toJSON = function () {
   const { __v, _id, ...role } = this.toObject();
   role.id = _id;
