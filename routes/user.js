@@ -10,7 +10,7 @@ router.get('/',[
 ], getUserController);
 
 
-router.post('/', addUserController);
+router.post('/sign-up', addUserController);
 
 
 router.put('/:id',[
