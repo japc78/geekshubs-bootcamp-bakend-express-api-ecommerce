@@ -18,7 +18,23 @@ const emailExists = async (email = '') => {
   }
 }
 
+
+const isTheSameEmail = async (email = '', { req } ) => {
+  const { user } = req.body;
+
+  const emailExists = await User.findOne({ email });
+
+  if (emailExists && emailExists.email === user.email) {
+    throw new Error(`The email: ${email} is register for this users, please `);
+
+  } else if (emailExists && emailExists.email !== user.email){
+    throw new Error(`The email: ${email} already exists in database`);
+  }
+}
+
+
 module.exports = {
   isValidRole,
-  emailExists
+  emailExists,
+  isTheSameEmail
 }

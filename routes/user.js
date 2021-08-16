@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 
 const { getUserController, addUserController, updateUserController, deleteUserController} = require('../controllers/user');
 
-const { isValidRole, emailExists } = require('../helpers/dbValidators');
+const { isValidRole, emailExists, isTheSameEmail } = require('../helpers/dbValidators');
 
 const { validFields } = require('../middlewares/validFields');
 const { validJWT } = require('../middlewares/validJWT');
@@ -28,8 +28,13 @@ router.post('/sign-up',[
 ], addUserController);
 
 
-router.put('/:id',[
+router.put('/update',[
   validJWT,
+  check('data.email', 'Email should be valid').optional().isEmail(),
+  check('data.name', 'Name is required').optional().notEmpty().trim(),
+  check('data.email').custom(isTheSameEmail).optional(),
+  check('data.role').custom(isValidRole).optional(),
+  validFields,
 ], updateUserController);
 
 
