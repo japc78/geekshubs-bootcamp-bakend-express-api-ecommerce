@@ -9,11 +9,13 @@ dbConnection();
 
 const paths = {
   user : '/api/user',
-  auth: '/api/auth'
+  auth: '/api/auth',
+  role: '/api/role'
 }
 
 app.use(paths.user, require('./routes/user'));
 app.use(paths.auth, require('./routes/auth'));
+app.use(paths.role, require('./routes/role'));
 
 app.get('/', (req, res) => {
   res.send('Hello Geeks');
