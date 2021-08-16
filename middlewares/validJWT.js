@@ -29,7 +29,7 @@ const validJWT = async (req = request, res = response, next) => {
       message: 'Token is not valid - user disabled'
     });
 
-    req.body.uid = user._id;
+    req.body.user = user.toJSON();
     next();
 
   } catch (error) {

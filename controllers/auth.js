@@ -50,7 +50,7 @@ const authLoginController = async (req = request, res = response) => {
 
 
 const authLogoutController = async (req = request, res = response) => {
-  const { uid } = req.body;
+  const { uid } = req.body.user;
 
   try {
     await UserSession.deleteOne({ uid }, (error, result)=> {
