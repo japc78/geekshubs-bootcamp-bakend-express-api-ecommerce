@@ -21,6 +21,7 @@ module.exports = {
       'error',
       'single'
     ],
-    'semi': [0]
+    'semi': [0],
+    'no-unused-vars': ['error', { 'vars': 'all', 'args': 'after-used', 'ignoreRestSiblings': true }],
   }
 }
