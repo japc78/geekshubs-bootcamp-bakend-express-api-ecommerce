@@ -35,7 +35,7 @@ const isTheSameEmail = async (email = '', { req } ) => {
 
 
 const categoryNameExits = async (name = '') => {
-  name = name.toUpperCase();
+  name = name.toLowerCase();
   const categoryNameExits = await Category.findOne({ name });
 
   if (categoryNameExits) {

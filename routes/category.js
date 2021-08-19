@@ -23,8 +23,8 @@ router.get('/',[
 router.post('/add',[
   validJWT,
   shouldBeRole('SELLER_ROLE', 'ADMIN_ROLE'),
-  check('name', 'The name is required').notEmpty(),
-  check('name').custom(categoryNameExits),
+  check('category.name', 'The name is required').notEmpty(),
+  check('category.name').custom(categoryNameExits),
   validFields
 ], addCategoryController);
 
