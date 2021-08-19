@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { getUserController, addUserController, updateUserController, deleteUserController} = require('../controllers/user');
+const { getUserController, addUserController, updateUserController, updateUserByIdController, deleteUserController} = require('../controllers/user');
 
 const { isValidRole, emailExists, isTheSameEmail } = require('../helpers/dbValidators');
 
@@ -36,6 +36,18 @@ router.put('/update',[
   check('data.role').custom(isValidRole).optional(),
   validFields,
 ], updateUserController);
+
+
+router.put('/update/:uid',[
+  validJWT,
+  isAdminRole,
+  check('uid', 'The id not is valid').isMongoId(),
+  check('data.email', 'Email should be valid').optional().isEmail(),
+  check('data.name', 'Name is required').optional().notEmpty().trim(),
+  check('data.email').custom(isTheSameEmail).optional(),
+  check('data.role').custom(isValidRole).optional(),
+  validFields,
+], updateUserByIdController);
 
 
 router.delete('/:id',[

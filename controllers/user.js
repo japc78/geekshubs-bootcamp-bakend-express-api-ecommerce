@@ -83,6 +83,30 @@ const updateUserController = async (req = request, res = response) => {
 }
 
 
+const updateUserByIdController = async (req = request, res = response) => {
+  const { uid } = req.params;
+  const { data } = req.body
+
+  try {
+    const userUpdated = await User.findByIdAndUpdate(uid, data, { new: true })
+
+    res.status(200).json({
+      status: 'SUCCESS',
+      user: userUpdated
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      status: 'FAILURE',
+      error: {
+        code: error.code,
+        message: error.message
+      }
+    });
+  }
+}
+
+
 const deleteUserController = async (req = request, res = response) => {
   try {
     const { id } = req.params;
@@ -111,5 +135,6 @@ module.exports = {
   getUserController,
   addUserController,
   updateUserController,
+  updateUserByIdController,
   deleteUserController
 }
