@@ -35,12 +35,11 @@ const getUserController = async (req = request, res = response) => {
 
 const addUserController = async (req = request, res = response) => {
   try {
-    const { userData } = req.body;
-    const user = new User(userData);
+    const user = new User(req.body.user);
 
     // Encriptar password
     const salt = bcrypt.genSaltSync();
-    user.password = bcrypt.hashSync(userData.password, salt);
+    user.password = bcrypt.hashSync(user.password, salt);
 
     await user.save();
 
@@ -62,25 +61,38 @@ const addUserController = async (req = request, res = response) => {
 
 
 const updateUserController = async (req = request, res = response) => {
+  const { user, data } = req.body
+
   try {
-
-    const {id} = req.params;
-    const { userData } = req.body;
-
-    if (userData.password) {
-      // Encriptar password
-      const salt = bcrypt.genSaltSync();
-      userData.password = bcrypt.hashSync(userData.password, salt);
-    }
-
-    const user = await User.findByIdAndUpdate(id, userData, (err, userDb)=> {
-      if (err) throw err;
-      return userDb;
-    })
+    const userUpdated = await User.findByIdAndUpdate(user.uid, data, { new: true })
 
     res.status(200).json({
       status: 'SUCCESS',
-      user
+      user: userUpdated
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      status: 'FAILURE',
+      error: {
+        code: error.code,
+        message: error.message
+      }
+    });
+  }
+}
+
+
+const updateUserByIdController = async (req = request, res = response) => {
+  const { uid } = req.params;
+  const { data } = req.body
+
+  try {
+    const userUpdated = await User.findByIdAndUpdate(uid, data, { new: true })
+
+    res.status(200).json({
+      status: 'SUCCESS',
+      user: userUpdated
     });
 
   } catch (error) {
@@ -123,5 +135,6 @@ module.exports = {
   getUserController,
   addUserController,
   updateUserController,
+  updateUserByIdController,
   deleteUserController
 }
