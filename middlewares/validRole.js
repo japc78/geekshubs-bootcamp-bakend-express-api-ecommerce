@@ -4,7 +4,7 @@ const isAdminRole = (req = request, res = response, next) => {
   if (!req.body.user) {
     return res.status(401).json({
       status: 'FAILURE',
-      message: 'Is necessary to valid the toke first'
+      message: 'Is necessary to valid the token first'
     });
   }
 
@@ -19,6 +19,27 @@ const isAdminRole = (req = request, res = response, next) => {
   next();
 }
 
+
+const shouldBeRole = (...roles) => {
+  return (req = request, res = response, next) => {
+    if (!req.user) {
+      return res.status(500).json({
+        status: 'FAILURE',
+        message: 'Is necessary to valid the token first'
+      });
+    }
+
+    const { role, name } = req.user;
+    if (!roles.includes(role)) return res.status(401).json({
+      status: 'FAILURE',
+      message: `The user: ${name} has not authorized role.`
+    });
+
+    next();
+  }
+}
+
 module.exports = {
-  isAdminRole
+  isAdminRole,
+  shouldBeRole
 }
