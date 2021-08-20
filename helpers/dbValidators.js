@@ -1,6 +1,7 @@
 const Role = require('../models/Role');
 const User = require('../models/User');
 const Category = require('../models/Category');
+const Product = require('../models/Product');
 
 const isValidRole = async (role = '') => {
   const existsRole = await Role.findOne({ role });
@@ -44,9 +45,32 @@ const categoryNameExits = async (name = '') => {
 }
 
 
+const categoryExitsById = async (id = '') => {
+  const categoryExits = await Category.findById(id);
+
+  console.log('pass', categoryExits);
+
+  if (!categoryExits) {
+    throw new Error(`The id: ${id} is not register in Database`);
+  }
+}
+
+
+const productNameExits = async (name = '') => {
+  name = name.toLowerCase();
+  const productNameExits = await Product.findOne({ name });
+
+  if (productNameExits) {
+    throw new Error(`The product name: ${name} already exits in Database`);
+  }
+}
+
+
 module.exports = {
   isValidRole,
   emailExists,
   isTheSameEmail,
-  categoryNameExits
+  categoryNameExits,
+  categoryExitsById,
+  productNameExits,
 }
