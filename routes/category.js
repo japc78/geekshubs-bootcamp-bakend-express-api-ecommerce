@@ -38,7 +38,7 @@ router.put('/update/:id',[
 ], updateCategoryController);
 
 
-router.delete('/:id',[
+router.delete('/delete/:id',[
   validJWT,
   isAdminRole
 ], deleteCategoryController);

@@ -99,7 +99,30 @@ const updateCategoryController = async (req = request, res = response) => {
 
 
 const deleteCategoryController = async (req = request, res = response) => {
-  //TODO deleteCategoryController
+  try {
+    const { id } = req.params;
+
+    const category = await Category.findByIdAndDelete(id);
+
+    if(!category) {
+      throw new Error(`The category with id: ${ id} has not been found`)
+    }
+
+    res.status(200).json({
+      status: 'SUCCESS',
+      message: 'The category has been delete on database',
+      category
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      status: 'FAILURE',
+      error: {
+        code: error.code,
+        message: error.message
+      }
+    });
+  }
 }
 
 
