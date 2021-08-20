@@ -29,9 +29,12 @@ router.post('/add',[
 ], addCategoryController);
 
 
-router.put('/update',[
+router.put('/update/:id',[
   validJWT,
   shouldBeRole('SELLER_ROLE', 'ADMIN_ROLE'),
+  check('id', 'The id not is valid').isMongoId(),
+  check('category.name', 'The name is required').notEmpty().optional(),
+  check('category.name').custom(categoryNameExits),
 ], updateCategoryController);
 
 

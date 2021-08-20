@@ -76,7 +76,25 @@ const addCategoryController = async (req = request, res = response) => {
 
 
 const updateCategoryController = async (req = request, res = response) => {
-  //TODO updateCategoryController
+  const { id } = req.params
+  const { category } = req.body;
+
+  try {
+    const categoryUpdated = await Category.findByIdAndUpdate(id, category, {new: true});
+    res.status(200).json({
+      status: 'SUCCESS',
+      category: categoryUpdated
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      status: 'FAILURE',
+      error: {
+        code: error.code,
+        message: error.message
+      }
+    });
+  }
 }
 
 
@@ -90,5 +108,4 @@ module.exports = {
   addCategoryController,
   updateCategoryController,
   deleteCategoryController
-
 }
