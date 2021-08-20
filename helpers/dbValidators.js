@@ -1,5 +1,6 @@
 const Role = require('../models/Role');
 const User = require('../models/User');
+const Category = require('../models/Category');
 
 const isValidRole = async (role = '') => {
   const existsRole = await Role.findOne({ role });
@@ -33,8 +34,19 @@ const isTheSameEmail = async (email = '', { req } ) => {
 }
 
 
+const categoryNameExits = async (name = '') => {
+  name = name.toLowerCase();
+  const categoryNameExits = await Category.findOne({ name });
+
+  if (categoryNameExits) {
+    throw new Error(`The name: ${name} already exits in Database`);
+  }
+}
+
+
 module.exports = {
   isValidRole,
   emailExists,
-  isTheSameEmail
+  isTheSameEmail,
+  categoryNameExits
 }
