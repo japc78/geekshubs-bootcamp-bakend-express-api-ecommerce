@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { addProductController, updateProductController, deleteProductController, getProductController } = require('../controllers/product');
-const { productNameExits, categoryExitsById, sellerExitsById } = require('../helpers/dbValidators');
+const { productNameExits, categoryExitsById } = require('../helpers/dbValidators');
 const { validFields } = require('../middlewares/validFields');
 const { validJWT } = require('../middlewares/validJWT');
 const { isAdminRole, shouldBeRole } = require('../middlewares/validRole');
@@ -21,6 +21,7 @@ router.post('/add',[
   check('data.name').custom(productNameExits),
   check('data.category', 'Not is valid id').isMongoId(),
   check('data.category').custom(categoryExitsById),
+  validFields
 ], addProductController);
 
 

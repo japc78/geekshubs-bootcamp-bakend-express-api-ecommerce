@@ -48,10 +48,8 @@ const categoryNameExits = async (name = '') => {
 const categoryExitsById = async (id = '') => {
   const categoryExits = await Category.findById(id);
 
-  console.log('pass', categoryExits);
-
   if (!categoryExits) {
-    throw new Error(`The id: ${id} is not register in Database`);
+    throw new Error(`The category id: ${id}, It is not register in Database`);
   }
 }
 
@@ -60,8 +58,8 @@ const productNameExits = async (name = '') => {
   name = name.toLowerCase();
   const productNameExits = await Product.findOne({ name });
 
-  if (productNameExits) {
-    throw new Error(`The product name: ${name} already exits in Database`);
+  if (!productNameExits) {
+    throw new Error(`The product name: ${name}, it already exits in Database`);
   }
 }
 
