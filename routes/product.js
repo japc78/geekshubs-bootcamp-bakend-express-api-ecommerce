@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { addProductController, updateProductController, deleteProductController, getProductController } = require('../controllers/product');
-const { productNameExits, categoryExitsById } = require('../helpers/dbValidators');
+const { productNameExits, categoryExitsById, isTheSameSeller, productExitsById } = require('../helpers/dbValidators');
 const { validFields } = require('../middlewares/validFields');
 const { validJWT } = require('../middlewares/validJWT');
 const { isAdminRole, shouldBeRole } = require('../middlewares/validRole');
@@ -27,12 +27,26 @@ router.post('/add',[
 
 router.put('/update/:id',[
   validJWT,
+  check('id', 'The id not is valid').isMongoId(),
+  check('id').custom(productExitsById),
+  shouldBeRole('SELLER_ROLE', 'ADMIN_ROLE'),
+  check('id').custom(isTheSameSeller),
+  check('data.name', 'The name is required').notEmpty().optional(),
+  check('data.name').custom(productNameExits).optional(),
+  check('data.category', 'Not is valid id').isMongoId().optional(),
+  check('data.category').custom(categoryExitsById).optional(),
+  check('data.price', 'Should be a Number').isNumeric().optional(),
+  check('data.state', 'Should be true or false').isBoolean(),
+  validFields
 ], updateProductController);
 
 
 router.delete('/delete/:id',[
   validJWT,
-  isAdminRole
+  check('id', 'The id not is valid').isMongoId(),
+  check('id').custom(productExitsById),
+  shouldBeRole('SELLER_ROLE', 'ADMIN_ROLE'),
+  check('id').custom(isTheSameSeller),
 ], deleteProductController);
 
 

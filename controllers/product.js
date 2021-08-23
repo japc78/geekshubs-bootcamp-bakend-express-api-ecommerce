@@ -65,20 +65,47 @@ const addProductController = async (req = request, res = response) => {
 
 
 const updateProductController = async (req = request, res = response) => {
-  // TODO updateProductController
-  res.status(200).json({
-    status: 'SUCCESS'
-  });
+  const { id } = req.params;
+  const { data } = req.body;
+
+  try {
+    const product = await Product.findByIdAndUpdate(id, data, { new:true });
+
+    res.status(200).json({
+      status: 'SUCCESS',
+      product
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      status: 'FAILURE',
+      message: 'Error: Service is not available, contact with administrator',
+      error
+    });
+  }
 }
 
 
 const deleteProductController = async (req = request, res = response) => {
-  // TODO deleteProductController
-  res.status(200).json({
-    status: 'SUCCESS'
-  });
-}
+  const { id } = req.params;
 
+  try {
+    const product = await Product.findByIdAndDelete(id);
+
+    res.status(200).json({
+      status: 'SUCCESS',
+      message: 'The product has been delete on database',
+      product
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      status: 'FAILURE',
+      message: 'Error: Service is not available, contact with administrator',
+      error
+    });
+  }
+}
 
 
 module.exports = {
