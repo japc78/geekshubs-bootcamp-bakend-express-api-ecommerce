@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const LineItemSchema = Schema({
 
-  product: {
+  productId: {
     type: Schema.Types.ObjectId,
     ref: 'Product',
     required: [true, 'The product id is required']
@@ -19,4 +19,9 @@ const LineItemSchema = Schema({
   }
 })
 
-module.exports = model('LineItem', LineItemSchema);
+const LineItem = model('LineItem', LineItemSchema);
+
+module.exports = {
+  LineItemSchema,
+  LineItem
+};

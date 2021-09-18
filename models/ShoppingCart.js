@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const LineItem = require('./LineItem');
+const { LineItemSchema } = require('./LineItem');
 const User = require('./User');
 
 const ShoppingCartSchema = Schema({
@@ -16,7 +16,7 @@ const ShoppingCartSchema = Schema({
   },
 
   lineItems: {
-    type: [LineItem],
+    type: [LineItemSchema],
     required: [true, 'There must be at minimum one product in the cart.']
   }
 })
