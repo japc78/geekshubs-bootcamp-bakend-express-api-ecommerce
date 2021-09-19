@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const UserSession = require('../models/UserSession');
 const { jwtGenerator } = require('../helpers/jwt-generator');
+const ShoppingCart = require('../models/ShoppingCart');
 
 
 const authLoginController = async (req = request, res = response) => {
@@ -34,9 +35,12 @@ const authLoginController = async (req = request, res = response) => {
       await userSession.save();
     }
 
+    const shoppingCart = await ShoppingCart.findOne({uid: user.id});
+
     res.status(200).json({
       status: 'SUCCESS',
       user,
+      shoppingCart,
       token
     });
 

@@ -15,13 +15,21 @@ const LineItemSchema = Schema({
 
   price: {
     type: Number,
-    default: 0
+    require: [true, 'You must enter a actual price of this product']
   }
 })
 
-const LineItem = model('LineItem', LineItemSchema);
+LineItemSchema.virtual('total')
+  .get(function () {
+    return this.quantity * this.price;
+  })
 
-module.exports = {
-  LineItemSchema,
-  LineItem
-};
+LineItemSchema.set('toObject', { virtuals: true });
+LineItemSchema.set('toJSON', { virtuals: true });
+
+LineItemSchema.methods.toJSON = function () {
+  const { __v, _id, ...lineItem } = this.toObject();
+  return lineItem;
+}
+
+module.exports = model('LineItem', LineItemSchema);
