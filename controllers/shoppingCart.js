@@ -7,6 +7,7 @@ const getShoppingCartController = async (req = request, res = response) => {
   try {
 
     const shoppingCart = await ShoppingCart.findOne({ uid });
+
     // console.log(shoppingCart);
     res.status(200).json({
       status: 'SUCCESS',
