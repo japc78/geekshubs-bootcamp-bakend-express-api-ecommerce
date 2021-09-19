@@ -24,9 +24,13 @@ LineItemSchema.virtual('total')
     return this.quantity * this.price;
   })
 
-LineItemSchema.set('toObject', { virtuals: true });
-LineItemSchema.set('toJSON', { virtuals: true });
+// TODO Revisar crear un elemento id y mantiene el _id
+LineItemSchema.set('toObject', {
+  virtuals: true,
 
+});
+
+// TODO Revisar, no elimina elementos
 LineItemSchema.methods.toJSON = function () {
   const { __v, _id, ...lineItem } = this.toObject();
   return lineItem;
