@@ -11,7 +11,6 @@ const OrderSchema = Schema({
 
   date: {
     type: Date,
-    required: true,
     default: new Date().getTime()
   },
 
@@ -20,6 +19,9 @@ const OrderSchema = Schema({
     required: [true, 'There must be at minimum one product in the order.']
   }
 });
+
+OrderSchema.set('toObject', { virtuals: true });
+OrderSchema.set('toJSON', { virtuals: true });
 
 OrderSchema.virtual('total').get(function () {
   let total = 0;
