@@ -21,7 +21,15 @@ const OrderSchema = Schema({
 });
 
 OrderSchema.set('toObject', { virtuals: true });
-OrderSchema.set('toJSON', { virtuals: true });
+
+OrderSchema.set('toJSON', {
+  virtuals: true,
+
+  transform: function (doc, ret, options) {
+    delete ret._id;
+    delete ret.__v;
+  }
+});
 
 OrderSchema.virtual('total').get(function () {
   let total = 0;
@@ -33,10 +41,12 @@ OrderSchema.virtual('total').get(function () {
   return total;
 })
 
-OrderSchema.methods.toJSON = function () {
-  const { __v, _id, uid, ...shoppingCart } = this.toObject();
-  return shoppingCart;
-}
+
+
+// OrderSchema.methods.toJSON = function () {
+//   const { __v, _id, ...shoppingCart } = this.toObject();
+//   return shoppingCart;
+// }
 
 module.exports = model('Order', OrderSchema);
 
