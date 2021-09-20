@@ -13,7 +13,8 @@ const paths = {
   role: '/api/role',
   category: '/api/category',
   product: '/api/product',
-  shoppingCart: '/api/shopping-cart'
+  shoppingCart: '/api/shopping-cart',
+  order: '/api/order'
 }
 
 app.use(paths.user, require('./routes/user'));
@@ -22,6 +23,7 @@ app.use(paths.role, require('./routes/role'));
 app.use(paths.category, require('./routes/category'));
 app.use(paths.product, require('./routes/product'));
 app.use(paths.shoppingCart, require('./routes/shoppingCart'));
+app.use(paths.order, require('./routes/order'));
 
 app.get('/', (req, res) => {
   res.send('Hello Geeks');
