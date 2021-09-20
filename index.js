@@ -1,11 +1,14 @@
 const express = require('express');
+const morgan = require('morgan');
 const dbConnection = require('./db/config');
 
 require('dotenv').config();
 
 const app = express();
 app.use( express.json());
+app.use(morgan(process.env.MORGAN));
 dbConnection();
+
 
 const paths = {
   user : '/api/user',
