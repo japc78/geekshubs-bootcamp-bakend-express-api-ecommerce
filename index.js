@@ -1,12 +1,13 @@
 const express = require('express');
 const morgan = require('morgan');
 const dbConnection = require('./db/config');
+const logger = require('./tools/logger');
 
 require('dotenv').config();
 
 const app = express();
 app.use( express.json());
-app.use(morgan(process.env.MORGAN));
+app.use(morgan(process.env.MORGAN, { stream: logger.stream }));
 dbConnection();
 
 
