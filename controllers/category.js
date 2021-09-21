@@ -1,6 +1,7 @@
 const { response, request } = require('express');
 
 const Category = require('../models/Category');
+const logger = require('../tools/logger');
 
 const getCategoriesController = async (req = request, res = response) => {
   try {
@@ -31,6 +32,7 @@ const getCategoriesController = async (req = request, res = response) => {
         .populate(queryDetails.populate)
     ]);
 
+    logger.info(`UserId: ${user.uid}`)
     res.status(200).json({
       status: 'SUCCESS',
       total,
@@ -61,11 +63,13 @@ const addCategoryController = async (req = request, res = response) => {
     // Save in database
     await category.save();
 
+    logger.info(`UserId: ${ req.body.user.uid }`)
     res.status(201).json({
       category
     });
 
   } catch (error) {
+    logger.error(`UserId: ${ req.body.user.uid }`)
     res.status(500).json({
       status: 'FAILURE',
       message: 'Error: Service is not available, contact with administrator',
@@ -81,12 +85,15 @@ const updateCategoryController = async (req = request, res = response) => {
 
   try {
     const categoryUpdated = await Category.findByIdAndUpdate(id, category, {new: true});
+
+    logger.info(`UserId: ${ req.body.user.uid }`)
     res.status(200).json({
       status: 'SUCCESS',
       category: categoryUpdated
     });
 
   } catch (error) {
+    logger.error(`UserId: ${ req.body.user.uid }`)
     res.status(500).json({
       status: 'FAILURE',
       error: {
@@ -108,6 +115,7 @@ const deleteCategoryController = async (req = request, res = response) => {
       throw new Error(`The category with id: ${ id} has not been found`)
     }
 
+    logger.info(`UserId: ${ req.body.user.uid }`)
     res.status(200).json({
       status: 'SUCCESS',
       message: 'The category has been delete on database',
@@ -115,6 +123,7 @@ const deleteCategoryController = async (req = request, res = response) => {
     });
 
   } catch (error) {
+    logger.error(`UserId: ${ req.body.user.uid }`)
     res.status(500).json({
       status: 'FAILURE',
       error: {

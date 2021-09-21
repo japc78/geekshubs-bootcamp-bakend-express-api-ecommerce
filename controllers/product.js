@@ -1,6 +1,7 @@
 const { response, request } = require('express');
 
 const Product = require('../models/Product');
+const logger = require('../tools/logger');
 
 
 const getProductController = async (req = request, res = response) => {
@@ -24,6 +25,7 @@ const getProductController = async (req = request, res = response) => {
         })
     ]);
 
+    logger.info(`UserId: ${ req.body.user.uid }`)
     res.status(200).json({
       status: 'SUCCESS',
       total,
@@ -31,6 +33,7 @@ const getProductController = async (req = request, res = response) => {
     })
 
   } catch (error) {
+    logger.error(`UserId: ${ req.body.user.uid }`)
     res.status(500).json({
       status: 'FAILURE',
       message: 'Error: Service is not available, contact with administrator',
@@ -49,12 +52,14 @@ const addProductController = async (req = request, res = response) => {
 
     const product = await Product.create(data);
 
+    logger.info(`UserId: ${ req.body.user.uid }`)
     res.status(200).json({
       status: 'SUCCESS',
       product
     })
 
   } catch (error) {
+    logger.error(`UserId: ${ req.body.user.uid }`)
     res.status(500).json({
       status: 'FAILURE',
       message: 'Error: Service is not available, contact with administrator',
@@ -71,12 +76,14 @@ const updateProductController = async (req = request, res = response) => {
   try {
     const product = await Product.findByIdAndUpdate(id, data, { new:true });
 
+    logger.info(`UserId: ${ req.body.user.uid }`)
     res.status(200).json({
       status: 'SUCCESS',
       product
     });
 
   } catch (error) {
+    logger.error(`UserId: ${ req.body.user.uid }`)
     res.status(500).json({
       status: 'FAILURE',
       message: 'Error: Service is not available, contact with administrator',
@@ -92,6 +99,7 @@ const deleteProductController = async (req = request, res = response) => {
   try {
     const product = await Product.findByIdAndDelete(id);
 
+    logger.info(`UserId: ${ req.body.user.uid }`)
     res.status(200).json({
       status: 'SUCCESS',
       message: 'The product has been delete on database',
@@ -99,6 +107,7 @@ const deleteProductController = async (req = request, res = response) => {
     });
 
   } catch (error) {
+    logger.error(`UserId: ${ req.body.user.uid }`)
     res.status(500).json({
       status: 'FAILURE',
       message: 'Error: Service is not available, contact with administrator',

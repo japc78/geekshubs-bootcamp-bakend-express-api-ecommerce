@@ -5,6 +5,7 @@ const User = require('../models/User');
 const UserSession = require('../models/UserSession');
 const { jwtGenerator } = require('../helpers/jwt-generator');
 const ShoppingCart = require('../models/ShoppingCart');
+const logger = require('../tools/logger');
 
 
 const authLoginController = async (req = request, res = response) => {
@@ -13,12 +14,24 @@ const authLoginController = async (req = request, res = response) => {
   try {
     const user = await User.findOne({email});
 
-    if (!user) return res.status(400).json({ msg: 'Email not found in DB'});
+    if (!user) {
+      const msg = 'Email not found in DB'
+      logger.error(`User login: ${email}, ${msg}`);
+      return res.status(400).json({ msg })
+    }
 
-    if (!user.state) return res.status(400).json({ msg: 'Email is not active in DB'});
+    if (!user.state) {
+      const msg = 'Email is not active in DB'
+      logger.error(`User login: ${email}, ${msg}`);
+      return res.status(400).json({ msg });
+    }
 
     const isValidPassword = bcrypt.compareSync(password, user.password);
-    if(!isValidPassword) return res.status(400).json({ msg: 'Password is not valid'});
+    if(!isValidPassword) {
+      const msg = 'Password is not valid'
+      logger.error(`User login: ${email}, ${msg}`);
+      return res.status(400).json({ msg });
+    }
 
     // Generar el JWT
     const token = await jwtGenerator(user.id);
@@ -36,6 +49,7 @@ const authLoginController = async (req = request, res = response) => {
     }
 
     const shoppingCart = await ShoppingCart.findOne({uid: user.id});
+    logger.info(`User login success, id: ${user.id}`);
 
     res.status(200).json({
       status: 'SUCCESS',
@@ -45,6 +59,7 @@ const authLoginController = async (req = request, res = response) => {
     });
 
   } catch (error) {
+    logger.error(`User login error, email: ${email}, ${error.message}`);
     res.status(500).json({
       status: 'FAILURE',
       error: error.message
@@ -61,12 +76,14 @@ const authLogoutController = async (req = request, res = response) => {
       if (error) throw error;
 
       if (result.deletedCount === 0) {
+        logger.error(`User logout error | id: ${uid}`)
         res.status(500).json({
           status: 'FAILURE',
           message: 'Unable to complete the operation, please try again later, if the problem persists, please contact the Administrator.'
         })
 
       } else {
+        logger.info(`User logout success, id: ${ uid }`);
         res.status(200).json({
           status: 'SUCCESS',
           message: `User with id: ${uid} logout correctly`
@@ -75,6 +92,7 @@ const authLogoutController = async (req = request, res = response) => {
     })
 
   } catch (error) {
+    logger.error(`User logout error, email: ${uid}, ${error}`);
     res.status(500).json({
       status: 'FAILURE',
       message: 'Error: Service is not available, contact with administrator',
