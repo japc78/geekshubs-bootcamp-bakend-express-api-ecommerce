@@ -1,13 +1,31 @@
 const express = require('express');
 const morgan = require('morgan');
 const dbConnection = require('./db/config');
-const logger = require('./tools/logger');
 
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
+
+const logger = require('./tools/logger');
 require('dotenv').config();
+const { name, version, description} = require('./package.json');
+
+
+const apiDocSetup = swaggerJSDoc({
+  swaggerDefinition: {
+    info: {
+      title: name,
+      version,
+      description
+    }
+  },
+  apis: ['./routes/*.js']
+})
+
 
 const app = express();
 app.use( express.json());
 app.use(morgan(process.env.MORGAN, { stream: logger.stream }));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(apiDocSetup));
 dbConnection();
 
 
