@@ -1,5 +1,6 @@
 const { response, request } = require('express');
 const ShoppingCart = require('../models/ShoppingCart');
+const logger = require('../tools/logger');
 
 const getShoppingCartController = async (req = request, res = response) => {
   const {uid} = req.body.user;
@@ -8,13 +9,14 @@ const getShoppingCartController = async (req = request, res = response) => {
 
     const shoppingCart = await ShoppingCart.findOne({ uid });
 
-    // console.log(shoppingCart);
+    logger.info(`UserId: ${ req.body.user.uid }`)
     res.status(200).json({
       status: 'SUCCESS',
       shoppingCart
     });
 
   } catch (error) {
+    logger.error(`UserId: ${ req.body.user.uid }`)
     res.status(500).json({
       status: 'FAILURE',
       message: 'Error: Service is not available, contact with administrator',
@@ -36,12 +38,14 @@ const updateShoppingCartController = async (req = request, res = response) => {
       sc = await ShoppingCart.create(shoppingCart);
     }
 
+    logger.info(`UserId: ${ req.body.user.uid }`)
     res.status(200).json({
       status: 'SUCCESS',
       shoppingCart: sc
     });
 
   } catch (error) {
+    logger.error(`UserId: ${ req.body.user.uid }`)
     res.status(500).json({
       status: 'FAILURE',
       message: 'Error: Service is not available, contact with administrator',

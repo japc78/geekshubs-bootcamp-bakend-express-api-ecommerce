@@ -2,6 +2,7 @@ const { response, request } = require('express');
 const bcrypt = require('bcrypt');
 
 const User = require('../models/User');
+const logger = require('../tools/logger');
 
 
 const getUserController = async (req = request, res = response) => {
@@ -17,6 +18,7 @@ const getUserController = async (req = request, res = response) => {
         .limit(Number(limit))
     ]);
 
+    logger.info(`UserId: ${ req.body.user.uid }`)
     res.status(200).json({
       status: 'SUCCESS',
       total,
@@ -24,6 +26,7 @@ const getUserController = async (req = request, res = response) => {
     });
 
   } catch (error) {
+    logger.error(`UserId: ${ req.body.user.uid }`)
     res.status(500).json({
       status: 'FAILURE',
       message: 'Error: Service is not available, contact with administrator',
@@ -43,12 +46,14 @@ const addUserController = async (req = request, res = response) => {
 
     await user.save();
 
+    logger.info(`UserId: ${ req.body.user.email }`)
     res.status(200).json({
       status: 'SUCCESS',
       user
     });
 
   } catch (error) {
+    logger.error(`UserId: ${ req.body.user.email }`)
     res.status(500).json({
       status: 'FAILURE',
       error: {
@@ -66,12 +71,14 @@ const updateUserController = async (req = request, res = response) => {
   try {
     const userUpdated = await User.findByIdAndUpdate(user.uid, data, { new: true })
 
+    logger.info(`UserId: ${ req.body.user.uid }`)
     res.status(200).json({
       status: 'SUCCESS',
       user: userUpdated
     });
 
   } catch (error) {
+    logger.error(`UserId: ${ req.body.user.uid }`)
     res.status(500).json({
       status: 'FAILURE',
       error: {
@@ -90,12 +97,14 @@ const updateUserByIdController = async (req = request, res = response) => {
   try {
     const userUpdated = await User.findByIdAndUpdate(uid, data, { new: true })
 
+    logger.info(`UserId: ${ req.body.user.uid }`)
     res.status(200).json({
       status: 'SUCCESS',
       user: userUpdated
     });
 
   } catch (error) {
+    logger.error(`UserId: ${ req.body.user.uid }`)
     res.status(500).json({
       status: 'FAILURE',
       error: {
